@@ -43,7 +43,16 @@
             "category" => "Домашние дела",
             "is_complete" => false
         ],
-    ]
+    ];
+
+    // функция для подсчёта задач в проекте
+    function get_tasks_count(array $tasks, $project) {
+        $count = 0;
+        foreach($tasks as $key => $task) {
+            $task["category"] == $project ? ++$count : $count;
+        };
+        return $count;
+    };
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -88,7 +97,7 @@
                                 <?php foreach ($projects as $project): ?>
                                     <li class="main-navigation__list-item">
                                         <a class="main-navigation__list-item-link" href="#"><?=$project;?></a>
-                                        <span class="main-navigation__list-item-count">0</span>
+                                        <span class="main-navigation__list-item-count"><?=get_tasks_count($tasks, $project);?></span>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
@@ -139,9 +148,9 @@
                                     <td class="task__file">
                                         <a class="download-link" href="#">Home.psd</a>
                                     </td>
-                                    <?php if (isset($task["task_date"])): ?>
-                                        <td class="task__date"><?=$task["task_date"];?></td>
-                                    <?php endif; ?>
+
+                                    <td class="task__date"><?php if (isset($task["task_date"])): ?><?=$task["task_date"];?><?php endif; ?></td>
+
                                 </tr>
                             <?php endforeach; ?>
                         </table>
