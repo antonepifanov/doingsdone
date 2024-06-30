@@ -142,3 +142,12 @@ function include_template($name, array $data = []) {
 
     return $result;
 }
+
+// функция для подсчёта задач в проекте
+function get_tasks_count(array $tasks, $project) {
+    $count = 0;
+    foreach($tasks as $task) {
+        $task["category"] == $project ? ++$count : $count;
+    };
+    return $count;
+};
