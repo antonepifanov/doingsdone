@@ -143,6 +143,9 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
+// показывать или нет выполненные задачи
+$show_complete_tasks = rand(0, 1);
+
 // функция для подсчёта задач в проекте
 function get_tasks_count(array $tasks, $project) {
     $count = 0;
