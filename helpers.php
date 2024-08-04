@@ -154,3 +154,13 @@ function get_tasks_count(array $tasks, $project) {
     };
     return $count;
 };
+
+// функция для определения срочной задачи
+function is_important_task($task_date) {
+    $deadline_date = date_create($task_date);
+    $now_date = date_create("now");
+    $date_diff = date_diff($now_date, $deadline_date);
+    $hours_to_deadline_count = date_interval_format($date_diff, "%r%a") * 24 + date_interval_format($date_diff, "%h");
+
+    return $hours_to_deadline_count <= 24 ? true : false;
+};

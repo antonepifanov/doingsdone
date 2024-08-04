@@ -24,7 +24,7 @@ $tasks = [
     ],
     [
         "task" => "Встреча с другом",
-        "task_date" => "21.07.2024",
+        "task_date" => "5.08.2024",
         "category" => "Входящие",
         "is_complete" => false
     ],
