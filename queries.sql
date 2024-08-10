@@ -15,3 +15,15 @@ INSERT INTO tasks (name, date_term, user_id, project_id, status)
     ("Встреча с другом", "2024-08-05", 1, 1, 0),
     ("Купить корм для кота", NULL, 1, 4, 0),
     ("Заказать пиццу", NULL, 1, 4, 0);
+
+# Получение списка проектов для пользователя
+SELECT name FROM projects WHERE user_id = 1;
+
+# Получение списка задач для одного проекта
+SELECT name FROM tasks WHERE project_id = 1;
+
+# Отметка о выполнении задачи
+UPDATE tasks SET status = 1 WHERE id = 1;
+
+# Обновление названия задачи
+UPDATE tasks SET name = "Встреча с друзьями" WHERE id = 4;
