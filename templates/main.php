@@ -45,7 +45,7 @@
 
     <table class="tasks">
         <?php foreach ($tasks as $key => $task): ?>
-            <?php if ($task["is_complete"] && !$show_complete_tasks) continue; ?>
+            <?php if ($task["status"] && !$show_complete_tasks) continue; ?>
             <?= include_template('/task.php', ['key' => $key, 'task' => $task]); ?>
         <?php endforeach; ?>
     </table>
