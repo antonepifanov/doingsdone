@@ -4,9 +4,9 @@
     <nav class="main-navigation">
         <ul class="main-navigation__list">
             <?php foreach ($projects as $project): ?>
-                <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?=htmlspecialchars($project);?></a>
-                    <span class="main-navigation__list-item-count"><?=get_tasks_count($tasks, $project);?></span>
+                <li class="main-navigation__list-item <?php if (isset($_GET["project"]) && $_GET["project"] == $project["id"]): ?>main-navigation__list-item--active<?php endif; ?>">
+                    <a class="main-navigation__list-item-link" href="/?project=<?=$project["id"];?>"><?=htmlspecialchars($project["name"]);?></a>
+                    <span class="main-navigation__list-item-count"><?=get_tasks_count($all_tasks, $project["name"]);?></span>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -44,9 +44,15 @@
     </div>
 
     <table class="tasks">
-        <?php foreach ($tasks as $key => $task): ?>
+        <?php
+            if (!count($tasks_by_category)) {
+                http_response_code(404);
+                print("В данном проекте нет задач");
+            };
+        ?>
+        <?php foreach ($tasks_by_category as $key => $task): ?>
             <?php if ($task["status"] && !$show_complete_tasks) continue; ?>
-            <?= include_template('/task.php', ['key' => $key, 'task' => $task]); ?>
+            <?= include_template("/task.php", ["key" => $key, "task" => $task]); ?>
         <?php endforeach; ?>
     </table>
 </main>

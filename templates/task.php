@@ -6,9 +6,12 @@
         </label>
     </td>
 
-    <td class="task__file">
-        <a class="download-link" href="#">Home.psd</a>
-    </td>
+    <?php if (isset($task["file"])): ?>
+        <td class="task__file">
+            <a class="download-link" href="#">Home.psd</a>
+        </td>
+    <?php endif; ?>
+
 
     <td class="task__date">
         <?php if (isset($task["task_date"])): ?>
