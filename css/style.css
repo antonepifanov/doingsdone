@@ -692,6 +692,7 @@ a:focus {
 
 .form {
   max-width: 445px;
+  padding-bottom: 20px;
 }
 
 .form__row {
