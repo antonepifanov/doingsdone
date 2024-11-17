@@ -8,6 +8,7 @@ mysqli_set_charset($connection, "utf8");
 
 $projects = [];
 $tasks = [];
+
 if ($connection == false) {
     print("Ошибка подключения: " . mysqli_connect_error());
 }
@@ -18,6 +19,7 @@ else {
 
     if ($projects_result) {
         $projects = mysqli_fetch_all($projects_result, MYSQLI_ASSOC);
+        $projects_ids = array_column($projects, 'id');
     }
 
     // Получение списка всех задач
@@ -30,11 +32,67 @@ else {
     }
 };
 
-// HTML-код страницы формы для добавления задачи
-$page_content = include_template("form-task.php", [
-    "projects" => $projects,
-    "all_tasks" => $all_tasks,
-]);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $required = ['name', 'project'];
+	$errors = [];
+
+    $rules = [
+        'project' => function($value) use ($projects_ids) {
+            return validate_project($value, $projects_ids);
+        },
+        'date' => function($value) {
+            if (!is_date_valid($value)) {
+                return "Дата должна быть больше или равна текущей";
+            };
+
+            return null;
+        }
+    ];
+
+    $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT], true);
+
+    foreach ($task as $key => $value) {
+        if (isset($rules[$key])) {
+            $rule = $rules[$key];
+            $errors[$key] = $rule($value);
+        }
+
+        if (in_array($key, $required) && empty($value)) {
+            $errors[$key] = "Поле $key надо заполнить";
+        }
+    }
+
+    $errors = array_filter($errors);
+
+    if (!empty($_FILES['file']['name'])) {
+		$file_name = $_FILES['file']['name'];
+        $file_path = __DIR__ . '/uploads/';
+        move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
+        $task['file'] = '/uploads/' . $file_name;
+	}
+
+    if (count($errors)) {
+		$page_content = include_template('form-task.php', [
+            'task' => $task,
+            'errors' => $errors,
+            'projects' => $projects,
+            'all_tasks' => $all_tasks,
+        ]);
+	} else {
+        $form_task_sql = 'INSERT INTO tasks (date_add, user_id, name, project_id, date_term, file) VALUES (NOW(), 1, ?, ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $form_task_sql, $task);
+        $res = mysqli_stmt_execute($stmt);
+
+        if ($res) {
+            header("Location: /");
+        }
+	}
+} else {
+	$page_content = include_template("form-task.php", [
+        "projects" => $projects,
+        "all_tasks" => $all_tasks,
+    ]);
+}
 
 // окончательный HTML-код
 $layout_content = include_template("layout.php", [

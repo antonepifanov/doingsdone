@@ -15,9 +15,24 @@
  */
 function is_date_valid(string $date) : bool {
     $format_to_check = 'Y-m-d';
+    $cur_date = date($format_to_check);
     $dateTimeObj = date_create_from_format($format_to_check, $date);
 
-    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
+    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0 && strtotime($date) >= strtotime($cur_date);
+}
+
+// Проверяет на существование проекта
+function validate_project($id, $allowed_list) {
+    if (!in_array($id, $allowed_list)) {
+        return "Указан несуществующий проект";
+    }
+
+    return null;
+}
+
+// Возвращает значение поля
+function get_post_val($name) {
+    return filter_input(INPUT_POST, $name);
 }
 
 /**
