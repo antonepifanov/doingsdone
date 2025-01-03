@@ -25,7 +25,7 @@
 
                             <div class="main-header__side-item user-menu">
                                 <div class="user-menu__data">
-                                    <p><?php $_SESSION['user']['name'] ?></p>
+                                    <p><?= $_SESSION['user']['name']; ?></p>
                                     <a href="logout.php">Выйти</a>
                                 </div>
                             </div>
@@ -42,12 +42,14 @@
         <footer class="main-footer">
             <div class="container">
                 <div class="main-footer__copyright">
-                    <p>© 2019, «Дела в порядке»</p>
+                    <p>© <?= date('Y') ?>, «Дела в порядке»</p>
 
                     <p>Веб-приложение для удобного ведения списка дел.</p>
                 </div>
 
-                <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
+                <?php endif; ?>
 
                 <div class="main-footer__social social">
                     <span class="visually-hidden">Мы в соцсетях:</span>

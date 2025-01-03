@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (in_array($key, $required) && empty($value)) {
-            $errors[$key] = "Поле $key надо заполнить";
+            $errors[$key] = "Это поле надо заполнить";
         }
     }
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if ($res && empty($errors)) {
-            header("Location: /");
+            header("Location: /auth.php");
             exit();
         }
 	}

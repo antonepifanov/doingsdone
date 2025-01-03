@@ -751,7 +751,7 @@ a:focus {
 
 .welcome {
   width: 540px;
-  margin: 75px auto 0;
+  margin: 75px auto 20px;
 
   text-align: center;
 }

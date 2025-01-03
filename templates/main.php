@@ -30,7 +30,6 @@
     <table class="tasks">
         <?php
             if (!count($tasks_by_category)) {
-                http_response_code(404);
                 print("В данном проекте нет задач");
             };
         ?>
