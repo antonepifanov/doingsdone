@@ -1,10 +1,6 @@
 <?php
+require_once("init.php");
 require_once("helpers.php");
-date_default_timezone_set("Europe/Moscow");
-
-// Подключение к базе данных
-$connection = mysqli_connect("127.0.0.1", "root", "", "doingsdone");
-mysqli_set_charset($connection, "utf8");
 
 $register_data = [];
 
@@ -61,12 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $register_data['errors'] = $errors;
 }
 
-$page_content = include_template("register.php", $register_data);
+if (!isset($_SESSION['user'])) {
+    $page_content = include_template("register.php", $register_data);
+} else {
+    header("Location: /");
+    exit();
+}
 
 // окончательный HTML-код
 $layout_content = include_template("layout.php", [
     "content" => $page_content,
-    "title" => "Дела в порядке | Регистрация"
+    "title" => "Дела в порядке | Регистрация",
+    "is_anonymous" => false
 ]);
 
 print($layout_content);
