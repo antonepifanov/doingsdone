@@ -48,6 +48,10 @@ if (isset($_GET["project"]) && !empty($_GET["project"])) {
     $tasks_by_category = $all_tasks;
 }
 
+if (isset($_GET["show_completed"])) {
+    $_GET["show_completed"] == 1 ? $show_complete_tasks = true : $show_complete_tasks = false;
+}
+
 // HTML-код главной страницы
 $page_content = include_template("main.php", [
     "projects" => $projects,
